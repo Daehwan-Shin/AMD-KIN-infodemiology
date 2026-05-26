@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+
+# Sensitive data (raw Naver dump — not redistributed)
+*.jsonl
+*.xlsx
+_stage1_*
+_stage2_*
+_stage3_*
+_stage4_*
+!data/strict_AMD_corpus_1989.csv
+
+# API keys / secrets
+.env
+*.key
+*secret*
+*credential*
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Output / temp
+output/
+tmp/
+*.log
