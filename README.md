@@ -125,6 +125,15 @@ deposited as a Multimedia Appendix to the paper.
 
 ---
 
+## Figure Source Tables & Answer-Signal Lexicons
+
+- **`tables/figure_source_tables_1989.md`** — per-figure aggregated source tables (counts and rates) recomputed on the final N=1,989 corpus, covering Figures 2–6 and S1–S5. These are the exact values plotted in the manuscript figures, allowing each figure to be reproduced and verified.
+- **`codebook/answer_signal_lexicons.md`** — the full Korean keyword lexicons and refinement rules (refined detector v2) for the eight answer-ecosystem signals (manuscript Multimedia Appendix 3).
+
+**Answer-signal precision (PPV)**: Positive predictive values were estimated by manually adjudicating 25 keyword-matched threads per signal (pooled PPV 70.5%, 95% CI 63.8–76.4; per-signal values reported in the paper). The raw adjudication snippets contain identifiable physician/clinic names and patient question text, so — consistent with the corpus de-identification policy above — they are **not redistributed**; the validated PPV summary in the paper is the reproducible artifact.
+
+---
+
 ## Requirements
 
 Python 3.12+
