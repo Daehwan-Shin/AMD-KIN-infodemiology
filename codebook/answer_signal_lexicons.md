@@ -1,6 +1,6 @@
-# Multimedia Appendix 3 — Answer-Signal Detection Lexicons
+# Multimedia Appendix 2 — Answer-Signal Detection Lexicons
 
-Full Korean keyword lexicons and refinement rules used to detect the eight answer-ecosystem signals reported in the main text (Figure 6; N=1,989 strict-AMD threads). Source: `analysis/answer_signals.py`.
+Full Korean keyword lexicons and refinement rules used to detect the eight answer-ecosystem signals reported in the main text (Figure 5; N=1,989 strict-AMD threads). Source: `analysis/answer_signals.py`.
 
 ## Detection procedure
 
