@@ -47,7 +47,7 @@ mean topics/thread = **1.57**
 
 > 주: 본문 Results 의 C1/C2/C3/C4 first→last 값(7.6/19.1/8.4/3.9 등)은 위 ~2009 vs 2020~ 컬럼과 일치.
 
-## Figure 5 — Anti-VEGF agent mentions (thread counts; Q=question side, A=answer side)
+## Multimedia Appendix 3, Figure S4 — Anti-VEGF agent mentions (thread counts; Q=question side, A=answer side)
 
 | Agent | side | ~2009 | 2010-14 | 2015-19 | 2020~ | total | Z | q(BH) |
 |---|:--:|--:|--:|--:|--:|--:|--:|--:|
@@ -65,7 +65,7 @@ mean topics/thread = **1.57**
 **기간별 비율(%)** = 위 count / 기간 n. 예: Ranibizumab A 2020~ = 70/1045 = 6.7%.
 Cochran–Armitage trend test (score 1–4), BH-FDR across 10 tests (5 drugs × Q/A).
 
-## Figure 6 — Answer-ecosystem signals (refined detector v2; N=1,989)
+## Figure 5 — Answer-ecosystem signals (refined detector v2; N=1,989)
 
 | Signal | n | % | PPV (Wilson 95% CI) |
 |---|--:|--:|---|
@@ -80,7 +80,7 @@ Cochran–Armitage trend test (score 1–4), BH-FDR across 10 tests (5 drugs × 
 
 pooled PPV = 70.5% (63.8–76.4). 신호는 multi-label(한 답변에 복수 신호 독립 카운트).
 
-## Figure S1 — Annual strict-AMD thread counts
+## Multimedia Appendix 3, Figure S1 — Annual strict-AMD thread counts
 
 | Year | n | | Year | n | | Year | n |
 |--:|--:|---|--:|--:|---|--:|--:|
@@ -95,7 +95,7 @@ pooled PPV = 70.5% (63.8–76.4). 신호는 multi-label(한 답변에 복수 신
 
 2002–2003 = 0 (strict-AMD 미부합). 4 기간 경계: ≤2009 / 2010–14 / 2015–19 / 2020~.
 
-## Figure S3 — Treatment modality mention rate (N=1,989, Q+A combined)
+## Multimedia Appendix 3, Figure S3 — Treatment modality mention rate (N=1,989, Q+A combined)
 
 | Modality | n | % |
 |---|--:|--:|
@@ -106,7 +106,7 @@ pooled PPV = 70.5% (63.8–76.4). 신호는 multi-label(한 답변에 복수 신
 
 모달리티는 thread당 1회, 상호배타 아님.
 
-## Figure S4 — Injection-related sub-concerns (n=272; C4 primary or secondary)
+## Multimedia Appendix 3, Figure S5 — Injection-related sub-concerns (n=272; C4 primary or secondary)
 
 | Sub-concern | n | % |
 |---|--:|--:|
@@ -121,7 +121,7 @@ pooled PPV = 70.5% (63.8–76.4). 신호는 multi-label(한 답변에 복수 신
 
 분모 n=272 = C4 any-mention(`final_*`). 하위범주 multi-tag.
 
-## Figure S5 — Nutrition/lifestyle sub-categories (n=586; C5 primary or secondary)
+## Multimedia Appendix 3, Figure S6 — Nutrition/lifestyle sub-categories (n=586; C5 primary or secondary)
 
 | Sub-category | n | % |
 |---|--:|--:|

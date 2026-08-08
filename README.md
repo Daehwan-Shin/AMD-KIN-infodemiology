@@ -80,14 +80,14 @@ AMD-KIN-infodemiology/
 
 | Module | Description |
 |---|---|
-| `corpus_construction.py` | Builds the final 1,989-thread corpus from tri-LLM consensus + R1 rule |
-| `temporal_trends.py` | Per-period rates + Cochran–Armitage trend tests with BH-FDR |
-| `c5_trajectory.py` | Fig 1e — period mention-share trajectory for C5 (Nutrition/Lifestyle) |
-| `c9_subgroup.py` | Fig 6 — sub-category decomposition of C9 (S1–S7) |
-| `drug_recognition.py` | Anti-VEGF agent mentions (patient questions vs responder answers) |
-| `answer_signals.py` | 8 answer-text signals with PPV-validated lexicons (refined v2) |
-| `modality_injection_nutrition.py` | Treatment modality, C4 injection sub-concerns, C5 nutrition keywords |
-| `cochran_armitage_trend.py` | Statistical trend tests |
+| `corpus_construction.py` | Builds the 1,989-thread corpus **(requires non-public LLM intermediate outputs)** |
+| `temporal_trends.py` | Per-period primary and any-mention rate tables (rates only; trend tests are in `cochran_armitage_trend.py`) |
+| `c5_trajectory.py` | C5 period mention-share trajectory (reference; main-text Figure 3 plots the primary-topic rate) |
+| `c9_subgroup.py` | Figure 4 — sub-category decomposition of C9 (S1–S7) |
+| `drug_recognition.py` | Anti-VEGF agent mentions, Q vs A **(requires non-public answer text; not reproducible from the public CSV)** |
+| `answer_signals.py` | 8 answer-text signals with PPV-validated lexicons **(requires non-public answer text)** |
+| `modality_injection_nutrition.py` | Treatment modality, C4/C5 sub-concerns **(requires non-public answer text)** |
+| `cochran_armitage_trend.py` | χ² independence + Cochran–Armitage trend tests (primary **and** any-mention) with BH-FDR |
 
 ---
 
@@ -151,12 +151,14 @@ pip install -r requirements.txt
    ```bash
    python analysis/_csv_to_jsonl.py
    ```
-   This produces `data/_stage4_topic_FINAL_v3_1989.jsonl` (referenced by all `analysis/*.py`).
+   This produces `_stage4_topic_FINAL_v3_1989.jsonl` in the repository root (referenced by the public analysis scripts).
 3. Run any module in `analysis/` or `validation/` from the repository root:
    ```bash
    python analysis/c9_subgroup.py
    python validation/topic_kappa.py
    ```
+
+   **Reproducibility scope.** Topic-based analyses (`temporal_trends.py`, `cochran_armitage_trend.py`, `c5_trajectory.py`, `c9_subgroup.py`) run entirely from the public CSV. Answer-signal, drug-recognition, and modality analyses require the responder answer text, which cannot be redistributed under the platform's terms of service; their aggregate outputs are provided in `tables/figure_source_tables_1989.md`.
 4. Re-running the pipeline from raw data (`pipeline/stage1` ~ `stage4`) requires:
    - Raw Naver Knowledge-iN dump (not redistributed — see Data Availability statement in the paper)
    - API keys for Anthropic (Claude Opus), OpenAI (Codex), Google (Gemini)

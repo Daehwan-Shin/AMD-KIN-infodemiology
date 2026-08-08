@@ -15,7 +15,7 @@ CNAME={'C1':'질환정보·원인','C2':'증상·진단·검사','C3':'치료일
  'C5':'영양·생활습관','C6':'경과·예후·실명','C7':'비용·보험·행정','C8':'병원·의료진','C9':'기타'}
 codes=[f'C{i}' for i in range(1,10)]
 
-with open('_stage4_topic_final.jsonl', encoding='utf-8') as f:
+with open('_stage4_topic_FINAL_v3_1989.jsonl', encoding='utf-8') as f:
     rows=[json.loads(l) for l in f if l.strip()]
 def yr(r):
     m=re.match(r'(\d{4})', r.get('question_date','') or ''); return int(m.group(1)) if m else None
@@ -28,7 +28,7 @@ def bucket(y):
 order=['~2009','2010-14','2015-19','2020~']
 tab=np.zeros((len(order),9),dtype=int)
 for r in rows:
-    bi=order.index(bucket(yr(r))); ci=codes.index(r['primary_topic']); tab[bi,ci]+=1
+    bi=order.index(bucket(yr(r))); ci=codes.index(r['final_primary']); tab[bi,ci]+=1
 chi2,p,dof,_=chi2_contingency(tab)
 # Cramér's V
 nN=tab.sum(); V=np.sqrt(chi2/(nN*(min(tab.shape)-1)))
@@ -53,7 +53,7 @@ def cochran_armitage(year_arr, bin_arr):
 yarr=np.array([yr(r) for r in rows])
 res=[]
 for c in codes:
-    b=np.array([1 if r['primary_topic']==c else 0 for r in rows])
+    b=np.array([1 if r['final_primary']==c else 0 for r in rows])
     Z,pv,pb=cochran_armitage(yarr,b)
     # 방향: 초기(≤2012) vs 후기(≥2018) 비율
     early=b[yarr<=2012].mean()*100 if (yarr<=2012).any() else 0
@@ -74,6 +74,25 @@ for i,(c,Z,pv,e,l,d) in enumerate(res):
     sig='***' if adj[i]<.001 else '**' if adj[i]<.01 else '*' if adj[i]<.05 else 'ns'
     print(f'{c} {CNAME[c]:<14}{Z:>7.2f}{pv:>11.2e}{adj[i]:>11.2e}  {e:>6.1f}%{l:>6.1f}%  {d} {sig}')
 print('  *** p<.001  ** p<.01  * p<.05  ns 비유의 (FDR 보정)')
+
+
+# ---- 3) any-mention Cochran-Armitage (primary OR secondary), BH-FDR across 9 ----
+def anyset(r):
+    ss=r.get('final_secondary') or []
+    if isinstance(ss,str): ss=[x.strip() for x in re.split(r'[;,]',ss) if x.strip()]
+    return set([r['final_primary']]+list(ss))-{''}
+res_am=[]
+for c in codes:
+    b=np.array([1 if c in anyset(r) else 0 for r in rows])
+    Z,pv,pb=cochran_armitage(yarr,b); res_am.append([c,Z,pv])
+ps2=sorted([(res_am[i][2],i) for i in range(len(res_am))]); adj2=[0]*len(res_am); prev=1.0
+for rank,(pv,idx) in enumerate(reversed(ps2)):
+    k=len(res_am)-rank; val=min(prev,pv*len(res_am)/k); prev=val; adj2[idx]=val
+print()
+print('[any-mention time trend] Cochran-Armitage (primary OR secondary; BH-FDR across 9)')
+for i,(c,Z,pv) in enumerate(res_am):
+    sig='***' if adj2[i]<.001 else '**' if adj2[i]<.01 else '*' if adj2[i]<.05 else 'ns'
+    print(f'{c} {CNAME[c]:<14}{Z:>7.2f}{pv:>11.2e}{adj2[i]:>11.2e}  {sig}')
 
 # 저장
 with open('_stage5_trend_stats.txt','w',encoding='utf-8') as f:

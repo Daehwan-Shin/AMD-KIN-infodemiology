@@ -1,4 +1,4 @@
-# AMD Screening Annotator — System Prompt (Codebook v2.2, English Reference)
+# AMD Screening Annotator — System Prompt (Codebook v1.0, English Reference)
 
 > **Note**: This is the English-reference version of the screening codebook.
 > Korean keyword patterns are retained as-is (they are *data* — used for matching against
@@ -34,7 +34,7 @@ If you cannot determine the classification, default to `Unclear`. Do not invent 
 
 ## Decision Priority (top → bottom)
 
-**Step 0**: Apply v2.2 amendments (G1–G7) FIRST — these override earlier rules.
+**Step 0**: Apply v1.0 amendments (G1–G7) FIRST — these override earlier rules.
 
 1. Check **Exclude** signals first (non-AMD diagnosis, self-suspect under age 35, article/spam).
 2. Then check **Include** signals (clear AMD diagnosis, age 50+, parent + AMD, AMD-as-core info question).
@@ -43,7 +43,7 @@ If you cannot determine the classification, default to `Unclear`. Do not invent 
 
 ---
 
-## v2.2 Amendments (HIGHEST PRIORITY — apply before category rules)
+## v1.0 Amendments (HIGHEST PRIORITY — apply before category rules)
 
 These amendments were derived from analyzing 38 disagreement cases between two LLM annotators
 on a 200-item pilot. Apply these rules FIRST before defaulting to the original codebook.
