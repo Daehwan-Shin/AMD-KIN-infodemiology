@@ -2,8 +2,8 @@
 
 Reproducible analysis code for the paper:
 
-> **What the Public Asks About Age-Related Macular Degeneration:**
-> **A Multi-LLM Analysis of 20 Years of Korean Online Questions and Their Answer Ecosystem**
+> **Public Information Needs and the Online Answer Ecosystem in Age-Related Macular Degeneration:**
+> **An Infodemiology Study Using a Multi-LLM Consensus Pipeline**
 > Daehwan Shin et al. — submitted to *JMIR Public Health and Surveillance*, 2026.
 
 ---
@@ -83,7 +83,7 @@ AMD-KIN-infodemiology/
 | `corpus_construction.py` | Builds the 1,989-thread corpus **(requires non-public LLM intermediate outputs)** |
 | `temporal_trends.py` | Per-period primary and any-mention rate tables (rates only; trend tests are in `cochran_armitage_trend.py`) |
 | `c5_trajectory.py` | C5 period mention-share trajectory (reference; main-text Figure 3 plots the primary-topic rate) |
-| `c9_subgroup.py` | Figure 4 — sub-category decomposition of C9 (S1–S7) |
+| `c9_subgroup.py` | Figure 4 — reproduces S1–S7 from rationale-rich internal input, or verifies the released aggregate source table when run from the public CSV |
 | `drug_recognition.py` | Anti-VEGF agent mentions, Q vs A **(requires non-public answer text; not reproducible from the public CSV)** |
 | `answer_signals.py` | 8 answer-text signals with PPV-validated lexicons **(requires non-public answer text)** |
 | `modality_injection_nutrition.py` | Treatment modality, C4/C5 sub-concerns **(requires non-public answer text)** |
@@ -121,16 +121,17 @@ See `validation/README_validation.md` for the full validation summary table.
 
 **Redistribution**: The raw Naver Knowledge-iN threads themselves cannot be redistributed
 due to platform terms of service. The de-identified CSV here is the analysis-ready derivative
-deposited as a Multimedia Appendix to the paper.
+deposited in this repository and described in the paper's Data Availability statement.
 
 ---
 
 ## Figure Source Tables & Answer-Signal Lexicons
 
-- **`tables/figure_source_tables_1989.md`** — per-figure aggregated source tables (counts and rates) recomputed on the final N=1,989 corpus, covering Figures 2–5 and S1–S6. These are the exact values plotted in the manuscript figures, allowing each figure to be reproduced and verified.
+- **`tables/figure_source_tables_1989.md`** — per-figure aggregated source tables (counts and rates) recomputed on the final N=1,989 corpus, covering Figures 2–5 and S1–S6.
+- **`tables/c9_subgroup_source_table.csv`** — exact aggregate source values for Figure 4. Row-level C9 assignment used LLM rationale fields that are not present in the public CSV; the aggregate table therefore defines the public reproducibility boundary for this post-hoc analysis.
 - **`codebook/answer_signal_lexicons.md`** — the full Korean keyword lexicons and refinement rules (refined detector v2) for the eight answer-ecosystem signals (manuscript Multimedia Appendix 2).
 
-**Answer-signal precision (PPV)**: Positive predictive values were estimated by manually adjudicating 25 keyword-matched threads per signal (pooled PPV 70.5%, 95% CI 63.8–76.4; per-signal values reported in the paper). The raw adjudication snippets contain identifiable physician/clinic names and patient question text, so — consistent with the corpus de-identification policy above — they are **not redistributed**; the validated PPV summary in the paper is the reproducible artifact.
+**Answer-signal precision (PPV)**: Positive predictive values were reported from manual adjudication of 25 keyword-matched threads per signal. The adjudication snippets and row-level TP/FP decisions are not redistributed because they may contain identifiable physician/clinic names and patient question text. Accordingly, the public repository reproduces answer-signal prevalence but does not independently recalculate PPV from row-level judgments.
 
 ---
 
@@ -158,7 +159,9 @@ pip install -r requirements.txt
    python validation/topic_kappa.py
    ```
 
-   **Reproducibility scope.** Topic-based analyses (`temporal_trends.py`, `cochran_armitage_trend.py`, `c5_trajectory.py`, `c9_subgroup.py`) run entirely from the public CSV. Answer-signal, drug-recognition, and modality analyses require the responder answer text, which cannot be redistributed under the platform's terms of service; their aggregate outputs are provided in `tables/figure_source_tables_1989.md`.
+   **Reproducibility scope.** Topic distribution and temporal analyses (`temporal_trends.py`, `cochran_armitage_trend.py`, and `c5_trajectory.py`) run entirely from the public CSV. Exact row-level C9 subgroup assignment requires non-public LLM rationale fields; when those fields are absent, `c9_subgroup.py` reads the released aggregate source table and does not reclassify public text. Answer-signal, drug-recognition, and modality analyses require responder answer text, which cannot be redistributed under the platform's terms of service; their aggregate outputs are provided in `tables/figure_source_tables_1989.md`.
+
+   The validation scripts require the non-public expert review workbooks. Their aggregate results are reported in `validation/README_validation.md` and in the manuscript.
 4. Re-running the pipeline from raw data (`pipeline/stage1` ~ `stage4`) requires:
    - Raw Naver Knowledge-iN dump (not redistributed — see Data Availability statement in the paper)
    - API keys for Anthropic (Claude Opus), OpenAI (Codex), Google (Gemini)
@@ -189,5 +192,5 @@ E-mail: xtls0819@naver.com
 ## Acknowledgments
 
 The authors thank the two retinal specialists who performed independent expert labeling
-across all four validation tracks (binary screening, multi-label topic, R1 rule, and
-inter-expert disagreement consensus).
+for binary screening, topic classification, and review-pool rule validation, including
+consensus resolution where required.

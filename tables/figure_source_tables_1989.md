@@ -1,6 +1,6 @@
 # AMD KIN — Figure Source Tables (final corpus N=1,989)
 
-작성 2026-06-19 · 1,989 strict-AMD corpus 재집계 · 공동연구자(남기태 교수님) 공유용
+최종 점검 2026-08-29 · 1,989 strict-AMD corpus 및 공동연구자 원본 스크립트 재집계
 
 - 최종 corpus **N = 1989** (`_stage4_topic_FINAL_v3_1989.jsonl`)
 - 4 기간 n = **62 / 215 / 667 / 1045**
@@ -39,13 +39,45 @@ mean topics/thread = **1.57**
 | C8 | 6.5 | 8.8 | 6.9 | 11.4 |
 | C9 | 9.7 | 7.0 | 8.5 | 14.4 |
 
-**C5 mention-share trajectory** (3A 점선; 분모 = 기간 전체 mention 수)
-
-| | ~2009 | 2010-14 | 2015-19 | 2020~ |
-|---|--:|--:|--:|--:|
-| C5 mention-share % | 8.5 | 23.5 | 21.9 | 16.4 |
-
 > 주: 본문 Results 의 C1/C2/C3/C4 first→last 값(7.6/19.1/8.4/3.9 등)은 위 ~2009 vs 2020~ 컬럼과 일치.
+
+## Figure 4 — C9 subgroup analysis
+
+Panel A의 분모는 C9가 primary 또는 secondary topic인 304건이다. 하위군은 상호배타적이지 않다.
+
+| C9 subgroup | n | % of C9-tagged threads |
+|---|--:|--:|
+| S1 Post-injection adverse events/safety | 187 | 61.5 |
+| S2 Drug/food interaction | 81 | 26.6 |
+| S3 Other ophthalmic post-procedure | 70 | 23.0 |
+| S7 Other miscellaneous | 38 | 12.5 |
+| S5 Protective optical devices | 16 | 5.3 |
+| S4 Non-AMD/nonspecific diagnosis | 11 | 3.6 |
+| S6 Family/caregiving/administration | 7 | 2.3 |
+
+Panel B의 막대는 S1 thread 수이고, 비율의 분모는 각 기간의 전체 strict-AMD thread 수이다.
+
+| Period | S1 n | All strict-AMD n | S1 rate, % |
+|---|--:|--:|--:|
+| <=2009 | 4 | 62 | 6.5 |
+| 2010-14 | 18 | 215 | 8.4 |
+| 2015-19 | 52 | 667 | 7.8 |
+| 2020 onward | 113 | 1,045 | 10.8 |
+
+## Multimedia Appendix 3, Figure S2 — Any-mention trends
+
+각 셀은 `n (기간 내 전체 strict-AMD thread 대비 %)`이다. C5의 2010-14 값은 mention-share 23.5%가 아니라, Methods에서 정의한 thread-level any-mention rate 37.7%이다.
+
+| Topic | <=2009 (n=62) | 2010-14 (n=215) | 2015-19 (n=667) | 2020 onward (n=1,045) | P | q (BH) |
+|---|---:|---:|---:|---:|---:|---:|
+| C1 | 18 (29.0) | 48 (22.3) | 90 (13.5) | 133 (12.7) | <.001 | <.001 |
+| C2 | 8 (12.9) | 35 (16.3) | 150 (22.5) | 272 (26.0) | <.001 | <.001 |
+| C3 | 24 (38.7) | 48 (22.3) | 174 (26.1) | 152 (14.5) | <.001 | <.001 |
+| C4 | 12 (19.4) | 30 (14.0) | 73 (10.9) | 157 (15.0) | .64 | .80 |
+| C5 | 10 (16.1) | 81 (37.7) | 231 (34.6) | 264 (25.3) | .008 | .014 |
+| C9 | 7 (11.3) | 25 (11.6) | 80 (12.0) | 192 (18.4) | .0011 | .0024 |
+
+> C5의 4기간 형태는 rise-then-decline으로 비단조적이다. 위 Cochran-Armitage 검정은 연도 점수에 따른 전체 단조 성분을 검정하므로, `q=.014`와 비단조적 형태를 함께 보고한다.
 
 ## Multimedia Appendix 3, Figure S4 — Anti-VEGF agent mentions (thread counts; Q=question side, A=answer side)
 
@@ -67,7 +99,7 @@ Cochran–Armitage trend test (score 1–4), BH-FDR across 10 tests (5 drugs × 
 
 ## Figure 5 — Answer-ecosystem signals (refined detector v2; N=1,989)
 
-| Signal | n | % | PPV (Wilson 95% CI) |
+| Signal | n | % | 이전 원고에 보고된 PPV (Wilson 95% CI) |
 |---|--:|--:|---|
 | Supplement recommendation | 827 | 41.6 | 96% (80.5–99.3) |
 | Surgery / laser mention | 634 | 31.9 | — |
@@ -79,6 +111,8 @@ Cochran–Armitage trend test (score 1–4), BH-FDR across 10 tests (5 drugs × 
 | Cure / vision-recovery claim | 168 | 8.4 | — |
 
 pooled PPV = 70.5% (63.8–76.4). 신호는 multi-label(한 답변에 복수 신호 독립 카운트).
+
+> **PPV 검증 상태:** 신호별 prevalence는 원자료와 원본 detector script로 모두 재현했다. 그러나 공동연구자 폴더의 `AMD_signal_PPV_check.xlsx`에는 200건의 `judgment(TP/FP)` 셀이 모두 비어 있어 위 PPV와 pooled PPV는 독립 재계산하지 못했다. 최종 사용 전 완료된 판정표가 필요하다.
 
 ## Multimedia Appendix 3, Figure S1 — Annual strict-AMD thread counts
 
@@ -143,4 +177,4 @@ pooled PPV = 70.5% (63.8–76.4). 신호는 multi-label(한 답변에 복수 신
 분모 n=586 = C5 any-mention(`final_*`). 하위범주 multi-tag.
 
 ---
-*모든 수치는 final 1,989 corpus 기준으로 재현 가능. 약제/신호/모달리티는 원자료 답변텍스트 필요(스크립트: `_stage9_drug_trend_v6.py`, `_stage5_signals_v2.py`, `_stage5_detailed_analysis.py`).*
+*Topic, C9, 약제, 신호 prevalence, 치료 modality 및 C4/C5 하위범주는 final 1,989 corpus와 공동연구자 원본 스크립트로 재현했다. PPV만 판정 완료 원자료 부재로 미검증 상태이다.*
