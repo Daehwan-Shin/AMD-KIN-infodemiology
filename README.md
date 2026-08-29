@@ -1,196 +1,161 @@
 # AMD-KIN-infodemiology
 
-Reproducible analysis code for the paper:
+Reproducibility materials for:
 
-> **Public Information Needs and the Online Answer Ecosystem in Age-Related Macular Degeneration:**
+> **Age-Related Macular Degeneration Questions and the Online Answer Ecosystem on a Korean Public Q&A Platform:**
 > **An Infodemiology Study Using a Multi-LLM Consensus Pipeline**
-> Daehwan Shin et al. — submitted to *JMIR Public Health and Surveillance*, 2026.
 
----
+Target journal: *JMIR Public Health and Surveillance*.
 
-## Overview
+## Study snapshot
 
-This repository contains the codebooks, pipeline scripts, analysis code, and
-de-identified corpus used in the paper.
+- Final codebook-defined strict AMD corpus: **1,989 threads**
+- Source platform: Naver Knowledge-iN
+- Post dates: 2004 through April 9, 2026; 2026 is a partial year
+- Screening pipeline: Opus 4.7, Codex gpt-5.5, and Gemini 3 Pro
+- Independent expert-comparison samples: binary screening (n=200) and primary-topic classification (n=100)
+- Review-pool R1 rule: separate **internal agreement assessment** (n=100)
+- Topic coding: one primary topic plus optional secondary topics across C1-C9
 
-- **Corpus**: 1,989 strict-AMD threads from Naver Knowledge-iN (2004–2026)
-- **Pipeline**: tri-LLM consensus (Claude Opus 4.7 + OpenAI Codex gpt-5.5 + Google Gemini 3 Pro)
-- **Validation**: two retinal specialists on three independent samples
-  (Screening n=200, Topic n=100, Review-pool R1 rule n=100)
-- **Topics**: 9-class multi-label classification scheme (C1–C9)
-- **Codebooks v1.0** included: screening (G1–G7) and topic (B1–B8 boundary rules)
-- **Bilingual documentation**: codebooks and the validation summary are provided in both
-  the original Korean prose version and an English reference version (`*_EN.md`).
-  Korean keyword patterns are kept as-is (they are *data* — used for matching against
-  Korean question text); structural rules and examples are translated.
+## Repository structure
 
----
-
-## Repository Structure
-
-```
-AMD-KIN-infodemiology/
-├── README.md
-├── LICENSE                 (MIT)
-├── .gitignore
-├── requirements.txt
-│
-├── codebook/               Stage 2 (screening) and Stage 4 (topic) codebooks v1.0
-│   ├── stage2_screening_codebook_v1.0.md       (Korean prose, with English structural rules)
-│   ├── stage2_screening_codebook_v1.0_EN.md    (English reference)
-│   ├── stage4_topic_codebook_v1.0.md           (Korean)
-│   └── stage4_topic_codebook_v1.0_EN.md        (English reference)
-├── pipeline/               Multi-LLM screening → topic classification → R1 rule for Review pool
-├── analysis/               Topic distribution, temporal trends, C9 subgroup, drug, modality, answer signals
-├── validation/             Cohen's κ for screening, topic, and R1 rule against two retinal specialists
-│   ├── README_validation.md     (Korean summary)
-│   └── README_validation_EN.md  (English reference)
-└── data/                   De-identified strict-AMD corpus (1,989 threads)
+```text
+.
+├── analysis/       public-corpus analyses and reproducibility checks
+├── codebook/       released screening and topic codebooks v1.0
+├── crawler/        crawler and export workflow; no crawl output or credentials
+├── data/           deidentified strict AMD corpus (N=1,989)
+├── pipeline/       keyword filtering, model prompting/merging, and review-pool rule
+├── tables/         aggregate source tables used for main and supplementary figures
+└── validation/     aggregate confusion matrices, scripts, and validation summaries
 ```
 
----
+## Pipeline
 
-## Pipeline Overview
+1. Keyword filtering reduced 20,797 retrieved threads to 3,848 candidates.
+2. Opus 4.7 and Codex independently applied the released screening codebook v1.0.
+3. Gemini adjudicated disagreements; 2-of-3 majority voting produced 1,836 strict AMD threads.
+4. The final R1 clinical-review rule resolved a 648-thread review pool, adding 153 threads.
+5. The final strict AMD corpus contained **1,989 threads**.
+6. Opus and Codex assigned primary and optional secondary topic labels; Gemini adjudicated discordant primary labels, and 26 residual cases were finalized by two-expert consensus.
 
-1. **Stage 1 — Keyword filter** (`pipeline/stage1_keyword_filter.py`)
-   20,797 raw threads → 3,848 candidates (Korean AMD keyword filter).
+Internal code values such as `Include_strict_AMD`, `Review_needed`, and
+`Exclude_non_AMD` are retained in scripts for compatibility. The manuscript uses the
+reader-facing terms strict AMD, clinical review, and non-AMD.
 
-2. **Stage 2 — Multi-LLM screening** (`pipeline/stage2_screening_run.py`)
-   Claude Opus 4.7 + OpenAI Codex apply screening codebook v1.0 (G1–G7) to assign
-   `Include_strict_AMD`, `Review_needed`, `Exclude_non_AMD`, or `Unclear`.
+## Reproducibility scope
 
-3. **Stage 3 — Tie-break + majority vote** (`pipeline/stage3_majority_vote.py`)
-   Gemini 3 Pro resolves discordant cases; 2-of-3 majority voting yields
-   1,836 strict-AMD threads (with 648 `Review_needed` retained).
+### Fully reproducible from the released corpus
 
-4. **Stage 4 — Topic classification** (`pipeline/stage4_topic_classification_prompts.py`,
-   `pipeline/stage4_topic_merge.py`)
-   9-class multi-label classification (C1–C9) using topic codebook v1.0 with
-   B1–B8 boundary rules.
+- corpus QC and duplicate-content sensitivity analysis
+- primary-topic and any-mention distributions
+- four-period primary-topic tables
+- calendar-year Cochran-Armitage trend tests with BH correction
+- global primary-topic chi-square and Cramer's V
 
-5. **R1 rule for Review pool** (`pipeline/rule_R1_review_pool_v5b.py`)
-   Resolves the 648-thread review pool: self-suspected, age-cue-absent cases
-   without exclusion signals (test-normal, told-not-AMD, non-AMD cause, peripheral
-   procedure, AMD-not-main) are reclassified as Include_strict_AMD (n=153).
-   Final corpus: **1,989 strict-AMD threads**.
+Run:
 
----
+```bash
+python analysis/reproduce_public_results.py --output public_reproducibility_report.json
+```
 
-## Analysis Modules (`analysis/`)
+### Reproducible from public aggregate counts
 
-| Module | Description |
-|---|---|
-| `corpus_construction.py` | Builds the 1,989-thread corpus **(requires non-public LLM intermediate outputs)** |
-| `temporal_trends.py` | Per-period primary and any-mention rate tables (rates only; trend tests are in `cochran_armitage_trend.py`) |
-| `c5_trajectory.py` | C5 period mention-share trajectory (reference; main-text Figure 3 plots the primary-topic rate) |
-| `c9_subgroup.py` | Figure 4 — reproduces S1–S7 from rationale-rich internal input, or verifies the released aggregate source table when run from the public CSV |
-| `drug_recognition.py` | Anti-VEGF agent mentions, Q vs A **(requires non-public answer text; not reproducible from the public CSV)** |
-| `answer_signals.py` | 8 answer-text signals with PPV-validated lexicons **(requires non-public answer text)** |
-| `modality_injection_nutrition.py` | Treatment modality, C4/C5 sub-concerns **(requires non-public answer text)** |
-| `cochran_armitage_trend.py` | χ² independence + Cochran–Armitage trend tests (primary **and** any-mention) with BH-FDR |
+- screening, topic, and review-pool agreement statistics
+- C9 S1-S7 source values used in Figure 4
+- answer-text, drug, modality, C4, and C5 source values used in the manuscript figures
 
----
+Run:
 
-## Validation (`validation/`)
+```bash
+python validation/reproduce_aggregate_validation.py
+```
 
-| Track | Sample | Script |
-|---|---|---|
-| Screening (binary) | 200 balanced threads | `screening_kappa.py` |
-| Topic (9-class) | 100 random threads | `topic_kappa.py` |
-| Review-pool R1 rule (binary) | 100 balanced threads | `r1_rule_kappa.py` |
+The validation JSON contains only aggregate confusion matrices; it includes no record
+identifiers or text.
 
-See `validation/README_validation.md` for the full validation summary table.
+### Requires retained nonpublic inputs
 
----
+- re-running the complete multi-LLM pipeline requires the raw crawl, intermediate model outputs, and API access
+- exact row-level C9 S1-S7 assignment requires retained LLM rationales
+- answer-text, drug, and treatment-modality detection requires captured answer text
+- row-level expert-validation scripts require expert review workbooks
 
-## De-identified Corpus (`data/strict_AMD_corpus_1989.csv`)
+For analyses in this category, public aggregate source tables define the reproducibility
+boundary. The repository does not imply that all analyses can be regenerated from the
+released question-only CSV.
+
+## Released corpus
+
+`data/strict_AMD_corpus_1989.csv` contains:
 
 | Column | Description |
 |---|---|
-| `id` | Anonymized identifier (T-0001 to T-1989) |
-| `question_year` | Year only (month/day removed for de-identification) |
-| `category` | Naver Knowledge-iN category metadata |
-| `question_title` | Question title (phone/email/URL redacted) |
-| `question_content` | Question body (phone/email/URL redacted) |
-| `primary_topic` | C1–C9 (single dominant intent) |
-| `secondary_topics` | `;`-separated list of additional C-categories (multi-label) |
-| `source` | `tri_llm_consensus` or `review_pool_R1_v5b` |
+| `id` | anonymized identifier T-0001 to T-1989 |
+| `question_year` | year only |
+| `category` | platform category metadata |
+| `question_title` | deidentified title |
+| `question_content` | deidentified body |
+| `primary_topic` | one C1-C9 dominant topic |
+| `secondary_topics` | semicolon-separated additional topics |
+| `source` | tri-LLM consensus or review-pool rule |
 
-**Privacy**: Phone numbers, email addresses, and URLs are redacted with `[PHONE-REDACTED]`,
-`[EMAIL-REDACTED]`, `[URL-REDACTED]` tokens. Original thread IDs are not provided.
+Original platform IDs, URLs, author names, captured answer text, and full raw crawl are not
+included. Public text can still carry reidentification risk through search; users should
+apply appropriate ethics and platform-governance review before redistributing derivatives.
 
-**Redistribution**: The raw Naver Knowledge-iN threads themselves cannot be redistributed
-due to platform terms of service. The de-identified CSV here is the analysis-ready derivative
-deposited in this repository and described in the paper's Data Availability statement.
+## Figure source tables
 
----
+- `tables/figure_source_tables_1989.md`: final counts, percentages, trend results, and reported PPVs
+- `tables/c9_subgroup_source_table.csv`: exact aggregate values for Figure 4
+- `codebook/answer_signal_lexicons.md`: Korean keyword lexicons and v2 refinement rules
 
-## Figure Source Tables & Answer-Signal Lexicons
+Regenerate the neutral, submission-oriented Figures 2-5 with:
 
-- **`tables/figure_source_tables_1989.md`** — per-figure aggregated source tables (counts and rates) recomputed on the final N=1,989 corpus, covering Figures 2–5 and S1–S6.
-- **`tables/c9_subgroup_source_table.csv`** — exact aggregate source values for Figure 4. Row-level C9 assignment used LLM rationale fields that are not present in the public CSV; the aggregate table therefore defines the public reproducibility boundary for this post-hoc analysis.
-- **`codebook/answer_signal_lexicons.md`** — the full Korean keyword lexicons and refinement rules (refined detector v2) for the eight answer-ecosystem signals (manuscript Multimedia Appendix 2).
+```bash
+python figures/build_main_figures.py \
+  --corpus data/strict_AMD_corpus_1989.csv \
+  --c9-source tables/c9_subgroup_source_table.csv \
+  --output figures/generated
+```
 
-**Answer-signal precision (PPV)**: Positive predictive values were reported from manual adjudication of 25 keyword-matched threads per signal. The adjudication snippets and row-level TP/FP decisions are not redistributed because they may contain identifiable physician/clinic names and patient question text. Accordingly, the public repository reproduces answer-signal prevalence but does not independently recalculate PPV from row-level judgments.
+The reported answer-signal PPVs are author-adjudicated values. Row-level adjudication text
+is not publicly redistributed.
 
----
+## Crawler
 
-## Requirements
+The scripts under `crawler/` document the collection workflow. A live rerun can differ as
+platform indexing, deleted posts, HTML structure, and API behavior change. See
+`crawler/README.md` and `crawler/사용가이드.txt`.
 
-Python 3.12+
+## Model and codebook provenance
+
+- Anthropic: `claude-opus-4-7`
+- OpenAI: Codex CLI v0.130.0 with `gpt-5.5`, medium reasoning effort
+- Google: `gemini-3-pro-preview`, server-resolved as `gemini-3.1-pro-preview`
+- Released screening codebook v1.0: frozen G1-G7 rule set
+- Released topic codebook v1.0: frozen B1-B8 rule set
+
+Model-based screening and adjudication occurred May 13-14, 2026; topic model runs occurred
+May 18, 2026; final corpus refinements were completed by May 26, 2026.
+
+## Setup
 
 ```bash
 pip install -r requirements.txt
+python analysis/_csv_to_jsonl.py
 ```
 
----
-
-## Reproducing the Analyses
-
-1. The de-identified corpus is already included at `data/strict_AMD_corpus_1989.csv`.
-2. Generate the JSONL working file expected by the analysis scripts:
-   ```bash
-   python analysis/_csv_to_jsonl.py
-   ```
-   This produces `_stage4_topic_FINAL_v3_1989.jsonl` in the repository root (referenced by the public analysis scripts).
-3. Run any module in `analysis/` or `validation/` from the repository root:
-   ```bash
-   python analysis/c9_subgroup.py
-   python validation/topic_kappa.py
-   ```
-
-   **Reproducibility scope.** Topic distribution and temporal analyses (`temporal_trends.py`, `cochran_armitage_trend.py`, and `c5_trajectory.py`) run entirely from the public CSV. Exact row-level C9 subgroup assignment requires non-public LLM rationale fields; when those fields are absent, `c9_subgroup.py` reads the released aggregate source table and does not reclassify public text. Answer-signal, drug-recognition, and modality analyses require responder answer text, which cannot be redistributed under the platform's terms of service; their aggregate outputs are provided in `tables/figure_source_tables_1989.md`.
-
-   The validation scripts require the non-public expert review workbooks. Their aggregate results are reported in `validation/README_validation.md` and in the manuscript.
-4. Re-running the pipeline from raw data (`pipeline/stage1` ~ `stage4`) requires:
-   - Raw Naver Knowledge-iN dump (not redistributed — see Data Availability statement in the paper)
-   - API keys for Anthropic (Claude Opus), OpenAI (Codex), Google (Gemini)
-
----
-
-## License
-
-MIT — see `LICENSE`.
-
----
+The second command creates the public question-only JSONL used by several legacy analysis
+modules. Modules requiring answer text or internal model rationales will report or document
+that additional input boundary.
 
 ## Citation
 
-```
+```text
 [Citation will be added upon publication]
 ```
 
----
-
 ## Contact
 
-Daehwan Shin · https://github.com/Daehwan-Shin
-E-mail: xtls0819@naver.com
-
----
-
-## Acknowledgments
-
-The authors thank the two retinal specialists who performed independent expert labeling
-for binary screening, topic classification, and review-pool rule validation, including
-consensus resolution where required.
+Daehwan Shin: https://github.com/Daehwan-Shin

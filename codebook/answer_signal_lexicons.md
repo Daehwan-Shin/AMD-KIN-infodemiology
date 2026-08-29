@@ -62,4 +62,4 @@ For each signal, 25 keyword-matched threads were manually adjudicated as true/fa
 - Hospital / clinic referral: 40% (23.4–59.3)
 - **Pooled PPV: 70.5% (63.8–76.4)**
 
-Recall (sensitivity) was not estimated; reported prevalences are therefore conservative lower bounds. Low-PPV signals (e.g. hospital referral) should be interpreted cautiously.
+Recall (sensitivity) was not estimated, and imperfect precision can produce false positives. Reported values should therefore be interpreted as keyword-detected frequencies rather than confirmed prevalence of recommendations, commercial content, or misinformation. Signals with lower reported PPV, such as hospital referral, require particular caution.

@@ -9,6 +9,7 @@ openpyxl>=3.1
 
 # Visualization (only if regenerating matplotlib figures locally)
 matplotlib>=3.7
+Pillow>=10.0
 
 # LLM APIs (optional — only required for re-running the pipeline)
 anthropic>=0.40       # Claude Opus 4.7

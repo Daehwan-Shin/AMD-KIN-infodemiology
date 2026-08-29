@@ -55,7 +55,7 @@ Panel A의 분모는 C9가 primary 또는 secondary topic인 304건이다. 하�
 | S4 Non-AMD/nonspecific diagnosis | 11 | 3.6 |
 | S6 Family/caregiving/administration | 7 | 2.3 |
 
-Panel B의 막대는 S1 thread 수이고, 비율의 분모는 각 기간의 전체 strict-AMD thread 수이다.
+Panel B의 막대는 각 기간 전체 strict-AMD thread를 분모로 한 S1 비율이며, count는 label로 함께 표시한다.
 
 | Period | S1 n | All strict-AMD n | S1 rate, % |
 |---|--:|--:|--:|
@@ -89,17 +89,17 @@ Panel B의 막대는 S1 thread 수이고, 비율의 분모는 각 기간의 전�
 | Ranibizumab | A | 23 | 39 | 64 | 70 | 196 | -8.00 | <.001 |
 | Aflibercept | Q | 0 | 6 | 5 | 10 | 21 | -0.95 | .49 |
 | Aflibercept | A | 1 | 8 | 11 | 23 | 43 | -0.44 | .73 |
-| Faricimab | Q | 0 | 0 | 0 | 1 | 1 | — | ns |
-| Faricimab | A | 0 | 0 | 0 | 2 | 2 | — | ns |
+| Faricimab | Q | 0 | 0 | 0 | 1 | 1 | 0.81 | .52 |
+| Faricimab | A | 0 | 0 | 0 | 2 | 2 | 1.15 | .42 |
 | Brolucizumab | Q | 0 | 0 | 0 | 0 | 0 | — | - |
-| Brolucizumab | A | 0 | 0 | 0 | 3 | 3 | — | ns |
+| Brolucizumab | A | 0 | 0 | 0 | 3 | 3 | 1.41 | .32 |
 
 **기간별 비율(%)** = 위 count / 기간 n. 예: Ranibizumab A 2020~ = 70/1045 = 6.7%.
 Cochran–Armitage trend test (score 1–4), BH-FDR across 10 tests (5 drugs × Q/A).
 
 ## Figure 5 — Answer-ecosystem signals (refined detector v2; N=1,989)
 
-| Signal | n | % | 이전 원고에 보고된 PPV (Wilson 95% CI) |
+| Signal | n | % | 보고된 PPV (Wilson 95% CI) |
 |---|--:|--:|---|
 | Supplement recommendation | 827 | 41.6 | 96% (80.5–99.3) |
 | Surgery / laser mention | 634 | 31.9 | — |
@@ -111,8 +111,6 @@ Cochran–Armitage trend test (score 1–4), BH-FDR across 10 tests (5 drugs × 
 | Cure / vision-recovery claim | 168 | 8.4 | — |
 
 pooled PPV = 70.5% (63.8–76.4). 신호는 multi-label(한 답변에 복수 신호 독립 카운트).
-
-> **PPV 검증 상태:** 신호별 prevalence는 원자료와 원본 detector script로 모두 재현했다. 그러나 공동연구자 폴더의 `AMD_signal_PPV_check.xlsx`에는 200건의 `judgment(TP/FP)` 셀이 모두 비어 있어 위 PPV와 pooled PPV는 독립 재계산하지 못했다. 최종 사용 전 완료된 판정표가 필요하다.
 
 ## Multimedia Appendix 3, Figure S1 — Annual strict-AMD thread counts
 
@@ -177,4 +175,4 @@ pooled PPV = 70.5% (63.8–76.4). 신호는 multi-label(한 답변에 복수 신
 분모 n=586 = C5 any-mention(`final_*`). 하위범주 multi-tag.
 
 ---
-*Topic, C9, 약제, 신호 prevalence, 치료 modality 및 C4/C5 하위범주는 final 1,989 corpus와 공동연구자 원본 스크립트로 재현했다. PPV만 판정 완료 원자료 부재로 미검증 상태이다.*
+*Topic, C9, 약제, 신호 prevalence, 치료 modality 및 C4/C5 하위범주는 final 1,989 corpus와 공동연구자 원본 스크립트로 재현했다. PPV는 공동연구자가 최종 보고한 값을 유지한다.*

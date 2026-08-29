@@ -1,14 +1,24 @@
 # -*- coding: utf-8 -*-
 """항VEGF 약제명 빈도 점검: 질문only / 답변only / 합산, 정확표기 vs 키워드, 출처별."""
 import json, re, sys
+from pathlib import Path
 sys.stdout.reconfigure(encoding='utf-8')
 from collections import Counter
 import openpyxl
 
-with open('_stage4_topic_final.jsonl', encoding='utf-8') as f:
+TOPIC_INPUT = Path('_stage4_topic_FINAL_v3_1989.jsonl')
+RAW_INPUT = Path('황반변성_지식인_크롤링 260415(again).xlsx')
+if not TOPIC_INPUT.exists() or not RAW_INPUT.exists():
+    raise SystemExit(
+        'This module requires retained nonpublic answer text and the rationale-rich final '
+        'N=1,989 topic JSONL. Public aggregate results are in tables/figure_source_tables_1989.md.'
+    )
+with TOPIC_INPUT.open(encoding='utf-8') as f:
     rows = [json.loads(l) for l in f if l.strip()]
+if len(rows) != 1989 or any('row_index' not in row for row in rows):
+    raise SystemExit('Expected the retained rationale-rich final N=1,989 JSONL with row_index.')
 
-wb = openpyxl.load_workbook('황반변성_지식인_크롤링 260415(again).xlsx', read_only=True)
+wb = openpyxl.load_workbook(RAW_INPUT, read_only=True)
 ws = wb['Sheet1']; it = ws.iter_rows(values_only=True)
 hdr = list(next(it)); H = {n:i for i,n in enumerate(hdr)}
 acs = [H[f'answer_{k}_content'] for k in range(1,6)]; jc = H['answers_json']

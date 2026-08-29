@@ -1,0 +1,558 @@
+{
+  "schema_version": "1.0",
+  "generated": "2026-08-30",
+  "privacy": "Aggregate counts only; no row identifiers or text are included.",
+  "screening": {
+    "definition": "Binary strict-AMD screening",
+    "expert_1_vs_pipeline": {
+      "row_labels": [
+        "Strict AMD",
+        "Not strict AMD"
+      ],
+      "column_labels": [
+        "Strict AMD",
+        "Not strict AMD"
+      ],
+      "counts": [
+        [
+          89,
+          9
+        ],
+        [
+          11,
+          91
+        ]
+      ],
+      "n": 200
+    },
+    "expert_2_vs_pipeline": {
+      "row_labels": [
+        "Strict AMD",
+        "Not strict AMD"
+      ],
+      "column_labels": [
+        "Strict AMD",
+        "Not strict AMD"
+      ],
+      "counts": [
+        [
+          81,
+          2
+        ],
+        [
+          19,
+          98
+        ]
+      ],
+      "n": 200
+    },
+    "expert_1_vs_expert_2": {
+      "row_labels": [
+        "Strict AMD",
+        "Not strict AMD"
+      ],
+      "column_labels": [
+        "Strict AMD",
+        "Not strict AMD"
+      ],
+      "counts": [
+        [
+          80,
+          18
+        ],
+        [
+          3,
+          99
+        ]
+      ],
+      "n": 200
+    },
+    "expert_concordant_subset": {
+      "n": 177,
+      "definition": "Exact four-class expert-concordant subset",
+      "pipeline_matches": 169
+    }
+  },
+  "topic": {
+    "definition": "Nine-class primary topic",
+    "expert_1_vs_pipeline": {
+      "row_labels": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C9"
+      ],
+      "column_labels": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C9"
+      ],
+      "counts": [
+        [
+          5,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          12,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          8,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          27,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          0,
+          3,
+          0,
+          0,
+          8,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          10,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          9,
+          0
+        ],
+        [
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          9
+        ]
+      ],
+      "n": 100
+    },
+    "expert_2_vs_pipeline": {
+      "row_labels": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C9"
+      ],
+      "column_labels": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C9"
+      ],
+      "counts": [
+        [
+          3,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1
+        ],
+        [
+          3,
+          12,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          10,
+          0,
+          2,
+          1,
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          23,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          3,
+          0,
+          0,
+          7,
+          1,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          9,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          7,
+          0
+        ],
+        [
+          0,
+          1,
+          0,
+          0,
+          3,
+          0,
+          0,
+          1,
+          9
+        ]
+      ],
+      "n": 100
+    },
+    "expert_1_vs_expert_2": {
+      "row_labels": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C9"
+      ],
+      "column_labels": [
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "C7",
+        "C8",
+        "C9"
+      ],
+      "counts": [
+        [
+          3,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          13,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          6,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          2,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          2,
+          0,
+          22,
+          0,
+          0,
+          0,
+          4
+        ],
+        [
+          0,
+          0,
+          3,
+          0,
+          0,
+          8,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          9,
+          0,
+          0
+        ],
+        [
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          7,
+          0
+        ],
+        [
+          1,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          10
+        ]
+      ],
+      "n": 100
+    },
+    "expert_concordant_subset": {
+      "n": 80,
+      "pipeline_matches": 76
+    }
+  },
+  "review_pool_rule": {
+    "definition": "Review-pool R1 rule; internal assessment",
+    "pre_consensus_independent": {
+      "expert_1_vs_rule": {
+        "row_labels": [
+          "R1",
+          "not_R1"
+        ],
+        "column_labels": [
+          "R1",
+          "not_R1"
+        ],
+        "counts": [
+          [
+            40,
+            5
+          ],
+          [
+            9,
+            45
+          ]
+        ],
+        "n": 99
+      },
+      "expert_2_vs_rule": {
+        "row_labels": [
+          "R1",
+          "not_R1"
+        ],
+        "column_labels": [
+          "R1",
+          "not_R1"
+        ],
+        "counts": [
+          [
+            41,
+            15
+          ],
+          [
+            9,
+            35
+          ]
+        ],
+        "n": 100
+      },
+      "expert_1_vs_expert_2": {
+        "row_labels": [
+          "R1",
+          "not_R1"
+        ],
+        "column_labels": [
+          "R1",
+          "not_R1"
+        ],
+        "counts": [
+          [
+            42,
+            3
+          ],
+          [
+            14,
+            40
+          ]
+        ],
+        "n": 99
+      },
+      "expert_concordant_subset": {
+        "n": 82,
+        "rule_matches": 72
+      }
+    },
+    "post_consensus_adjudicated": {
+      "rule_vs_consensus": {
+        "row_labels": [
+          "R1",
+          "not_R1"
+        ],
+        "column_labels": [
+          "R1",
+          "not_R1"
+        ],
+        "counts": [
+          [
+            39,
+            8
+          ],
+          [
+            8,
+            42
+          ]
+        ],
+        "n": 97
+      },
+      "n": 97,
+      "rule_matches": 81
+    }
+  }
+}
