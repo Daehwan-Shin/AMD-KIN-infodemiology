@@ -8,13 +8,23 @@
 정련 전(v1) vs 후(v2) 건수 비교 + fig5 재생성 + 리포트 갱신.
 """
 import json, re, sys
+from pathlib import Path
 sys.stdout.reconfigure(encoding='utf-8')
 from collections import Counter
 import openpyxl
 
-with open('_stage4_topic_final.jsonl', encoding='utf-8') as f:
+TOPIC_INPUT = Path('_stage4_topic_FINAL_v3_1989.jsonl')
+RAW_INPUT = Path('황반변성_지식인_크롤링 260415(again).xlsx')
+if not TOPIC_INPUT.exists() or not RAW_INPUT.exists():
+    raise SystemExit(
+        'This module requires retained nonpublic answer text and the rationale-rich final '
+        'N=1,989 topic JSONL. Public aggregate results are in tables/figure_source_tables_1989.md.'
+    )
+with TOPIC_INPUT.open(encoding='utf-8') as f:
     rows=[json.loads(l) for l in f if l.strip()]
-wb=openpyxl.load_workbook('황반변성_지식인_크롤링 260415(again).xlsx', read_only=True)
+if len(rows) != 1989 or any('row_index' not in row for row in rows):
+    raise SystemExit('Expected the retained rationale-rich final N=1,989 JSONL with row_index.')
+wb=openpyxl.load_workbook(RAW_INPUT, read_only=True)
 ws=wb['Sheet1']; it=ws.iter_rows(values_only=True)
 hdr=list(next(it)); H={n:i for i,n in enumerate(hdr)}
 acs=[H[f'answer_{k}_content'] for k in range(1,6)]; jc=H['answers_json']

@@ -1,6 +1,12 @@
 # -*- coding: utf-8 -*-
-"""C9 subgroup analysis — corpus 1,989 기준."""
-import json, re, sys, os
+"""C9 subgroup analysis for the final 1,989-thread corpus.
+
+Exact row-level subgroup assignment used LLM rationale fields. When the public
+CSV-derived JSONL lacks those fields, report the released aggregate source table
+instead of silently reclassifying with incomplete inputs.
+"""
+import csv, json, re, sys, os
+from pathlib import Path
 sys.stdout.reconfigure(encoding='utf-8')
 from collections import Counter, defaultdict
 
@@ -16,6 +22,45 @@ c9_pri = [r for r in c9_any if r['final_primary']=='C9']
 print(f'Corpus: {len(rows)}')
 print(f'C9 (primary OR secondary): {len(c9_any)} ({len(c9_any)/len(rows)*100:.1f}%)')
 print(f'C9 primary: {len(c9_pri)} ({len(c9_pri)/len(rows)*100:.1f}%)')
+
+reason_fields = ('topic_reason', 'codex_reason', 'opus_reason', 'gemini_reason')
+has_rationale = any(
+    any((row.get(field) or '').strip() for field in reason_fields)
+    for row in c9_any
+)
+if not has_rationale:
+    source_path = Path(__file__).resolve().parent.parent / 'tables' / 'c9_subgroup_source_table.csv'
+    if not source_path.exists():
+        raise FileNotFoundError(
+            'Public JSONL lacks rationale fields and the aggregate C9 source table is missing.'
+        )
+    with source_path.open(encoding='utf-8-sig', newline='') as stream:
+        source_rows = list(csv.DictReader(stream))
+
+    print('\nPublic input does not contain the rationale fields used for row-level C9 assignment.')
+    print(f'Verifying the released aggregate source table: {source_path.relative_to(source_path.parent.parent)}')
+    print('\n=== C9 subgroup distribution (denominator=304 C9-tagged threads) ===')
+    overall = [row for row in source_rows if row['period'] == 'overall']
+    for row in sorted(overall, key=lambda value: -int(value['count'])):
+        print(
+            f"  {row['subgroup']:<32} {int(row['count']):>3} "
+            f"({float(row['rate_within_c9_pct']):4.1f}%)"
+        )
+
+    print('\n=== S1 post-injection adverse event/safety by period ===')
+    periods = ('<=2009', '2010-2014', '2015-2019', '2020 onward')
+    s1 = {
+        row['period']: row
+        for row in source_rows
+        if row['subgroup'] == 'S1_post_injection_AE' and row['period'] != 'overall'
+    }
+    for period in periods:
+        row = s1[period]
+        print(
+            f"  {period:<12} {int(row['count']):>3}/{int(row['denominator_all_threads']):>4} "
+            f"({float(row['rate_all_threads_pct']):4.1f}%)"
+        )
+    raise SystemExit(0)
 
 def text(r):
     q=(r.get('question_title','')+' '+r.get('question_content','')).lower()

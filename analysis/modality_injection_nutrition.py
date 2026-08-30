@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Stage 5 세부 분석 (strict_AMD 2,048건):
+Stage 5 세부 분석 (final strict AMD 1,989건; retained nonpublic inputs required):
  1) 기간별 대표주제 구성 변화
  2) 치료 방식 및 항VEGF 약제명 언급 빈도
  3) 주사치료 관련 세부 관심사
@@ -8,6 +8,7 @@ Stage 5 세부 분석 (strict_AMD 2,048건):
  5) 답변 내 신호 (한방·완치·외부링크·병원추천)
 """
 import json, re, sys, statistics
+from pathlib import Path
 sys.stdout.reconfigure(encoding='utf-8')
 from collections import Counter, defaultdict
 import openpyxl
@@ -15,12 +16,24 @@ import openpyxl
 CNAME = {'C1':'질환정보·원인','C2':'증상·진단·검사','C3':'치료일반·수술','C4':'항VEGF주사',
  'C5':'영양·생활습관','C6':'경과·예후·실명','C7':'비용·보험·행정','C8':'병원·의료진','C9':'기타'}
 
-with open('_stage4_topic_final.jsonl', 'r', encoding='utf-8') as f:
+TOPIC_INPUT = Path('_stage4_topic_FINAL_v3_1989.jsonl')
+RAW_INPUT = Path('황반변성_지식인_크롤링 260415(again).xlsx')
+if not TOPIC_INPUT.exists() or not RAW_INPUT.exists():
+    raise SystemExit(
+        'This module requires retained nonpublic answer text and the rationale-rich final '
+        'N=1,989 topic JSONL. Public aggregate results are in tables/figure_source_tables_1989.md.'
+    )
+with TOPIC_INPUT.open('r', encoding='utf-8') as f:
     rows = [json.loads(l) for l in f if l.strip()]
+if len(rows) != 1989 or any('row_index' not in row for row in rows):
+    raise SystemExit('Expected the retained rationale-rich final N=1,989 JSONL with row_index.')
+for row in rows:
+    row['primary_topic'] = row.get('final_primary', row.get('primary_topic'))
+    row['secondary_topics'] = row.get('final_secondary', row.get('secondary_topics', [])) or []
 print(f'strict_AMD: {len(rows)}건')
 
 # ---- 원본 엑셀에서 row_index→답변 텍스트 조인 ----
-SRC = '황반변성_지식인_크롤링 260415(again).xlsx'
+SRC = RAW_INPUT
 wb = openpyxl.load_workbook(SRC, read_only=True)
 ws = wb['Sheet1']
 it = ws.iter_rows(values_only=True)

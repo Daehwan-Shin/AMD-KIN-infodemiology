@@ -1,8 +1,15 @@
 # -*- coding: utf-8 -*-
-"""fig1e-style C5 mention share trajectory (corpus 1,989)."""
+"""Legacy mention-share calculation; not used for manuscript any-mention results.
+
+The denominator here is the total number of topic mentions, not threads. Use
+`reproduce_public_results.py` or `temporal_trends.py` for the manuscript-defined
+thread-level any-mention rate.
+"""
 import json, sys, re
 sys.stdout.reconfigure(encoding='utf-8')
 from collections import Counter
+
+print('WARNING: legacy mention-share denominator; not used in the manuscript.')
 
 with open('_stage4_topic_FINAL_v3_1989.jsonl', encoding='utf-8') as f:
     corpus = [json.loads(l) for l in f if l.strip()]

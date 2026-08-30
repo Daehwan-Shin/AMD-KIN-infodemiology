@@ -1,16 +1,13 @@
 """
-Stage 2: AMD Screening via Anthropic API
-Codebook v2.1
+Stage 2: AMD screening via the Anthropic API
+Released screening codebook v1.0 (frozen G1-G7 rule set)
 
 Usage:
-    # Pilot (50 items, Sonnet 4.6)
-    python stage2_run.py --input ../_pilot_sample_50.jsonl --output _stage2_pilot_sonnet.jsonl --model sonnet --concurrency 5
+    # Pilot
+    python pipeline/stage2_screening_run.py --input _pilot_sample_50.jsonl --output _stage2_pilot_opus.jsonl --model opus --concurrency 5
 
     # Full run (3,848 items)
-    python stage2_run.py --input ../_stage1_candidates.jsonl --output _stage2_full.jsonl --model sonnet --concurrency 8
-
-    # Use Opus 4.7 instead
-    python stage2_run.py --input ../_pilot_sample_50.jsonl --output _stage2_pilot_opus.jsonl --model opus --concurrency 5
+    python pipeline/stage2_screening_run.py --input _stage1_candidates.jsonl --output _stage2_full.jsonl --model opus --concurrency 8
 """
 import argparse
 import asyncio
@@ -38,7 +35,7 @@ PRICING = {
 }
 
 SCRIPT_DIR = Path(__file__).parent
-SYSTEM_PROMPT_PATH = SCRIPT_DIR / "prompts" / "stage2_system.md"
+SYSTEM_PROMPT_PATH = SCRIPT_DIR.parent / "codebook" / "stage2_screening_codebook_v1.0.md"
 
 VALID_STATUSES = {"Include_strict_AMD", "Review_needed", "Exclude_non_AMD", "Unclear"}
 
